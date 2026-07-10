@@ -1,4 +1,3 @@
-
 // ===============================
 // AOS Animation
 // ===============================
@@ -6,7 +5,6 @@
 AOS.init({
 
     duration:1000,
-
     once:true
 
 });
@@ -15,8 +13,9 @@ AOS.init({
 
 
 // ===============================
-// Loading Screen
+// Loader
 // ===============================
+
 
 window.addEventListener("load",()=>{
 
@@ -35,16 +34,12 @@ window.addEventListener("load",()=>{
 
             setTimeout(()=>{
 
-
                 loader.style.display="none";
-
 
             },500);
 
 
-
         },1000);
-
 
 
     }
@@ -55,8 +50,9 @@ window.addEventListener("load",()=>{
 
 
 
+
 // ===============================
-// Navbar Shadow
+// Navbar Scroll Effect
 // ===============================
 
 
@@ -80,13 +76,19 @@ window.addEventListener("scroll",()=>{
     else{
 
 
+        navbar.style.background="transparent";
+
         navbar.style.boxShadow="none";
 
 
     }
 
 
+
 });
+
+
+
 
 
 
@@ -105,52 +107,58 @@ const navLinks=document.querySelectorAll(".nav-link");
 window.addEventListener("scroll",()=>{
 
 
-    let current="";
-
-
-    sections.forEach(section=>{
-
-
-        let top=section.offsetTop-150;
-
-
-        if(scrollY>=top){
-
-
-            current=section.id;
-
-
-        }
-
-
-    });
+let current="";
 
 
 
-    navLinks.forEach(link=>{
+sections.forEach(section=>{
 
 
-        link.classList.remove("active");
+let sectionTop=
+section.offsetTop-150;
 
 
-        if(
-        link.getAttribute("href")
-        ===
-        "#"+current
-        ){
+
+if(scrollY>=sectionTop){
 
 
-            link.classList.add("active");
+current=section.getAttribute("id");
 
 
-        }
-
-
-    });
+}
 
 
 
 });
+
+
+
+navLinks.forEach(link=>{
+
+
+link.classList.remove("active");
+
+
+
+if(
+link.getAttribute("href")
+===
+"#"+current
+){
+
+
+link.classList.add("active");
+
+
+}
+
+
+
+});
+
+
+});
+
 
 
 
@@ -162,16 +170,15 @@ window.addEventListener("scroll",()=>{
 // ===============================
 
 
-const typingElement=
-document.querySelector(".hero h3");
+const typingText=document.querySelector(".hero h3");
 
 
 
-if(typingElement){
+if(typingText){
+
 
 
 const words=[
-
 
 "Web Developer",
 
@@ -181,41 +188,42 @@ const words=[
 
 "Frontend Developer"
 
-
 ];
 
 
-let wordIndex=0;
 
-let charIndex=0;
+let index=0;
+
+let char=0;
 
 let deleting=false;
 
 
 
-function typing(){
+function type(){
 
 
-let word=words[wordIndex];
+
+let word=words[index];
 
 
 
 if(!deleting){
 
 
-typingElement.innerHTML=
-word.substring(0,charIndex++);
+
+typingText.innerHTML=
+word.substring(0,char++);
 
 
 
-if(charIndex>word.length){
+if(char>word.length){
 
 
 deleting=true;
 
 
-setTimeout(typing,1200);
-
+setTimeout(type,1200);
 
 return;
 
@@ -229,23 +237,24 @@ return;
 else{
 
 
-typingElement.innerHTML=
-word.substring(0,charIndex--);
+typingText.innerHTML=
+word.substring(0,char--);
 
 
 
-if(charIndex<0){
+if(char<0){
 
 
 deleting=false;
 
 
-wordIndex++;
+index++;
 
 
-if(wordIndex>=words.length){
 
-wordIndex=0;
+if(index>=words.length){
+
+index=0;
 
 }
 
@@ -258,8 +267,8 @@ wordIndex=0;
 
 
 setTimeout(
-typing,
-deleting ? 50 : 100
+type,
+deleting ? 60 : 120
 );
 
 
@@ -267,10 +276,14 @@ deleting ? 50 : 100
 }
 
 
-typing();
+
+type();
+
 
 
 }
+
+
 
 
 
@@ -282,33 +295,36 @@ typing();
 // ===============================
 
 
-const darkButton=
+
+const darkBtn=
 document.createElement("button");
 
 
-darkButton.id="darkToggle";
+
+darkBtn.id="darkToggle";
 
 
-darkButton.innerHTML="🌙";
+darkBtn.innerHTML="🌙";
 
 
-document.body.appendChild(darkButton);
-
-
-
-
-let darkMode=
-localStorage.getItem("darkMode");
+document.body.appendChild(darkBtn);
 
 
 
-if(darkMode==="enabled"){
+
+
+let mode=
+localStorage.getItem("theme");
+
+
+
+if(mode==="dark"){
 
 
 document.body.classList.add("dark-mode");
 
 
-darkButton.innerHTML="☀️";
+darkBtn.innerHTML="☀️";
 
 
 }
@@ -316,7 +332,7 @@ darkButton.innerHTML="☀️";
 
 
 
-darkButton.onclick=()=>{
+darkBtn.addEventListener("click",()=>{
 
 
 document.body.classList.toggle(
@@ -333,13 +349,12 @@ document.body.classList.contains(
 
 
 localStorage.setItem(
-"darkMode",
-"enabled"
+"theme",
+"dark"
 );
 
 
-
-darkButton.innerHTML="☀️";
+darkBtn.innerHTML="☀️";
 
 
 }
@@ -348,19 +363,21 @@ else{
 
 
 localStorage.setItem(
-"darkMode",
-"disabled"
+"theme",
+"light"
 );
 
 
-
-darkButton.innerHTML="🌙";
+darkBtn.innerHTML="🌙";
 
 
 }
 
 
-};
+
+});
+
+
 
 
 
@@ -368,17 +385,15 @@ darkButton.innerHTML="🌙";
 
 
 // ===============================
-// Card Animation
+// Card Scroll Animation
 // ===============================
 
 
-const cards=
-document.querySelectorAll(".card");
+const cards=document.querySelectorAll(".card");
 
 
 
-const observer=
-new IntersectionObserver(
+const observer=new IntersectionObserver(
 (entries)=>{
 
 
@@ -390,7 +405,6 @@ if(entry.isIntersecting){
 
 entry.target.style.opacity="1";
 
-
 entry.target.style.transform=
 "translateY(0)";
 
@@ -401,7 +415,15 @@ entry.target.style.transform=
 });
 
 
-});
+},
+{
+
+threshold:0.2
+
+}
+
+);
+
 
 
 
@@ -419,7 +441,9 @@ card.style.transition=
 ".6s";
 
 
+
 observer.observe(card);
+
 
 
 });
@@ -433,76 +457,59 @@ observer.observe(card);
 // EmailJS Contact Form
 // ===============================
 
-
-/*
-
-EmailJS Setup:
-
-1. Create account:
-https://www.emailjs.com/
-
-2. Add your:
-
-Public Key
-Service ID
-Template ID
-
-
-Replace below values
-
-
-*/
-
-
-if(typeof emailjs !== "undefined"){
-
-
 emailjs.init({
-
-publicKey:
-"YOUR_PUBLIC_KEY"
-
-
+    publicKey: "uiEpzxs3vaGf_qArJ"
 });
 
 
-}
-
-
-
-const contactForm=
-document.querySelector("#contact-form");
-
+const contactForm = document.getElementById("contact-form");
 
 
 if(contactForm){
 
-
-
-contactForm.addEventListener(
-"submit",
-function(e){
-
+contactForm.addEventListener("submit", function(e){
 
 e.preventDefault();
 
 
+let form = this;
+
+
+// First: Send message to your Gmail
 
 emailjs.sendForm(
 
+"service_ejse2qx",
 
-"YOUR_SERVICE_ID",
+"template_lkfqtku",
 
-
-"YOUR_TEMPLATE_ID",
-
-
-this
-
+form
 
 )
 
-.then(()=>{
+.then(function(){
+
+console.log("Owner Email Sent");
+
+
+// Second: Auto Reply
+
+return emailjs.sendForm(
+
+"service_ejse2qx",
+
+"template_mlaicxk",
+
+form
+
+);
+
+
+})
+
+.then(function(){
+
+console.log("Auto Reply Sent");
 
 
 alert(
@@ -510,42 +517,32 @@ alert(
 );
 
 
-this.reset();
+form.reset();
 
 
 })
 
 
-.catch(()=>{
+.catch(function(error){
 
+console.log(error);
 
-alert(
-"Message Failed!"
-);
-
+alert(error.text);
 
 });
 
 
-
 });
-
-
 
 }
-
-
-
-
-
-
 // ===============================
-// Image Animation
+// Image Hover Animation
 // ===============================
 
 
 document.querySelectorAll("img")
 .forEach(img=>{
+
 
 
 img.addEventListener(
@@ -560,6 +557,8 @@ img.style.transform=
 });
 
 
+
+
 img.addEventListener(
 "mouseleave",
 ()=>{
@@ -572,17 +571,20 @@ img.style.transform=
 });
 
 
+
 });
 
 
 
 
 
+
+
 // ===============================
-// Console
+// Console Message
 // ===============================
 
 
 console.log(
-"Portfolio By Dipto Kanto Das"
+"Portfolio Website - Dipto Kanto Das"
 );
