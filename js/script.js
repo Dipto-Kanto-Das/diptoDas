@@ -184,9 +184,7 @@ const words=[
 
 "IT Officer",
 
-"Physics Instructor",
-
-"Frontend Developer"
+"Physics Instructor"
 
 ];
 
